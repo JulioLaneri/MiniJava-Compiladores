@@ -1,0 +1,98 @@
+import ast.*;
+import java.util.*;
+import java_cup.runtime.*;
+
+/* Code in the following section is included in the generated parser */
+parser code {:  
+	public void report_error(String message, Object info) {
+		System.err.print(message);
+		System.err.flush();
+		if (info instanceof Symbol)
+			if (((Symbol) info).left != -1)
+				System.err.println(" at line " + ((Symbol) info).left + " of input");
+			else
+				System.err.println("");
+		else
+			System.err.println("");
+	}
+:};  
+
+/* Terminals (tokens returned by the scanner) */
+
+/* reserved words: */
+terminal PRINT, EXTENDS, PUBLIC, STATIC, VOID, MAIN, CLASS, IF, ELSE, WHILE, THIS, TRUE, FALSE, INT, NEW, LENGTH, OR, RETURN;
+
+/* operators: */
+terminal PLUS, EQ, TIMES, MINUS, DIV, MOD, LT, GT, EQEQ, NEQ, GTE, LTE, AND, NOT,
+        MODEQ, TIMESEQ, PLUSEQ, MINUSEQ, DIVEQ, INC, DEC;
+
+/* delimiters: */
+terminal O_PAREN, C_PAREN, O_SBRACKET, LBRACKET, RBRACKET, C_SBRACKET, O_CBRACKET, C_CBRACKET, SEMICOLON, COMMA, DOT;
+
+/* tokens with values: */
+terminal String IDENTIFIER;
+terminal Integer NUM;
+
+/* Nonterminals */
+nonterminal Goal Goal;
+nonterminal MainClass MainClass;
+nonterminal ClassDeclList ClassDeclList;
+nonterminal ClassDecl ClassDecl;
+nonterminal ClassDeclSimple ClassDeclSimple;
+nonterminal ClassDeclExtends ClassDeclExtends;
+nonterminal Identifier Identifier;
+
+/* Precedence declarations */
+precedence left PLUS;
+
+/* Productions */
+
+Goal ::= MainClass:mc
+         {: 
+               Goal g = new Goal(mc,new ClassDeclList(mcleft),mcleft);
+               RESULT = g; 
+         :}
+        | MainClass:mc ClassDeclList:cdl
+         {: 
+               Goal g = new Goal(mc,cdl,mcleft);
+               RESULT = g; 
+         :};
+
+MainClass ::= PUBLIC CLASS Identifier:id O_CBRACKET PUBLIC STATIC VOID MAIN O_PAREN C_PAREN O_CBRACKET C_CBRACKET C_CBRACKET
+         {: 
+         		RESULT = new MainClass(id,new Identifier("",idleft), new VarDeclList(idleft),new StatementList(idleft),idleft); 
+         :};
+
+ClassDeclList ::= ClassDecl:cd 
+          {: 
+          		ClassDeclList cdl = new ClassDeclList(cdleft);
+                cdl.add(cd);
+                RESULT = cdl; 
+          :}
+				| ClassDeclList:cdl ClassDecl: cd
+		  {:  
+					cdl.add(cd);
+                    RESULT = cdl; 
+          :};
+    
+ClassDecl ::= ClassDeclSimple:cds
+                {: 
+                	RESULT = (ClassDecl)cds; 
+                :}
+               | ClassDeclExtends:cde
+                {: 
+                	RESULT = (ClassDecl)cde; 
+                :};
+
+ClassDeclSimple ::= PUBLIC CLASS Identifier:id O_CBRACKET C_CBRACKET
+				{: 
+					RESULT = new ClassDeclSimple(id, new VarDeclList(idleft),new MethodDeclList(idleft),idleft); 
+				:};
+
+ClassDeclExtends ::= PUBLIC CLASS Identifier:id EXTENDS Identifier:id2 O_CBRACKET C_CBRACKET
+				{:
+					RESULT = new ClassDeclExtends(id,id2,new VarDeclList(idleft),new MethodDeclList(idleft),idleft); 
+				:};
+
+Identifier  ::= IDENTIFIER:id
+                {: RESULT = new Identifier(id, idleft); :};
