@@ -1,11 +1,3 @@
 public class Main{ 
-	public static void main(){
-
-	}
-}
-public class ClassA{
-
-}
-public class ClassB extends ClassA{
 
 }

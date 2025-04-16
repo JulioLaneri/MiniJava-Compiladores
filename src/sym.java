@@ -7,7 +7,7 @@
 public class sym {
   /* terminals */
   public static final int DIVEQ = 38;
-  public static final int LTE = 31;
+  public static final int LTE = 30;
   public static final int LBRACKET = 44;
   public static final int MODEQ = 34;
   public static final int C_PAREN = 42;
@@ -15,47 +15,49 @@ public class sym {
   public static final int O_PAREN = 41;
   public static final int INT = 15;
   public static final int O_CBRACKET = 47;
-  public static final int MINUS = 23;
+  public static final int MINUS = 22;
   public static final int STATIC = 5;
   public static final int SEMICOLON = 49;
   public static final int NOT = 33;
-  public static final int AND = 32;
-  public static final int LT = 26;
-  public static final int OR = 18;
+  public static final int AND = 31;
+  public static final int LT = 25;
+  public static final int OR = 32;
   public static final int COMMA = 50;
   public static final int CLASS = 8;
   public static final int INC = 39;
-  public static final int DIV = 24;
+  public static final int DIV = 23;
   public static final int PLUSEQ = 36;
+  public static final int TYPE_INT = 54;
   public static final int NUM = 53;
   public static final int MINUSEQ = 37;
-  public static final int PLUS = 20;
+  public static final int PLUS = 19;
   public static final int MAIN = 7;
   public static final int IF = 9;
   public static final int THIS = 12;
   public static final int DOT = 51;
   public static final int O_SBRACKET = 43;
   public static final int EOF = 0;
-  public static final int RETURN = 19;
+  public static final int RETURN = 18;
   public static final int RBRACKET = 45;
   public static final int TRUE = 13;
   public static final int NEW = 16;
   public static final int error = 1;
-  public static final int EQEQ = 28;
-  public static final int MOD = 25;
-  public static final int NEQ = 29;
+  public static final int EQEQ = 27;
+  public static final int MOD = 24;
+  public static final int NEQ = 28;
   public static final int VOID = 6;
-  public static final int EQ = 21;
-  public static final int GTE = 30;
-  public static final int TIMES = 22;
+  public static final int EQ = 20;
+  public static final int GTE = 29;
+  public static final int TIMES = 21;
   public static final int ELSE = 10;
   public static final int C_CBRACKET = 48;
   public static final int WHILE = 11;
   public static final int PUBLIC = 4;
   public static final int EXTENDS = 3;
+  public static final int STRING = 55;
   public static final int DEC = 40;
   public static final int FALSE = 14;
-  public static final int GT = 27;
+  public static final int GT = 26;
   public static final int PRINT = 2;
   public static final int LENGTH = 17;
   public static final int C_SBRACKET = 46;
@@ -79,7 +81,6 @@ public class sym {
   "INT",
   "NEW",
   "LENGTH",
-  "OR",
   "RETURN",
   "PLUS",
   "EQ",
@@ -94,6 +95,7 @@ public class sym {
   "GTE",
   "LTE",
   "AND",
+  "OR",
   "NOT",
   "MODEQ",
   "TIMESEQ",
@@ -114,7 +116,9 @@ public class sym {
   "COMMA",
   "DOT",
   "IDENTIFIER",
-  "NUM"
+  "NUM",
+  "TYPE_INT",
+  "STRING"
   };
 }
 

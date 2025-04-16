@@ -6,4 +6,5 @@ public abstract class VarDecl extends Node {
 		super(line);
 		// TODO Auto-generated constructor stub
 	}
+	
 }

@@ -28,7 +28,6 @@ whitespace=[\r\n]|[ \t]
 "else"      { return symbol(sym.ELSE, yytext()); }
 "new"       { return symbol(sym.NEW, yytext()); }
 "int"       { return symbol(sym.INT, yytext()); }
-"or"        { return symbol(sym.OR, yytext()); }
 "if"        { return symbol(sym.IF, yytext()); }
 "while"     { return symbol(sym.WHILE, yytext()); }
 "length"    { return symbol(sym.LENGTH, yytext()); }

@@ -4,26 +4,26 @@ import java_cup.runtime.*;
 
 /* Code in the following section is included in the generated parser */
 parser code {:  
-	public void report_error(String message, Object info) {
-		System.err.print(message);
-		System.err.flush();
-		if (info instanceof Symbol)
-			if (((Symbol) info).left != -1)
-				System.err.println(" at line " + ((Symbol) info).left + " of input");
-			else
-				System.err.println("");
-		else
-			System.err.println("");
-	}
+    public void report_error(String message, Object info) {
+        System.err.print(message);
+        System.err.flush();
+        if (info instanceof Symbol)
+            if (((Symbol) info).left != -1)
+                System.err.println(" at line " + ((Symbol) info).left + " of input");
+            else
+                System.err.println("");
+        else
+            System.err.println("");
+    }
 :};  
 
 /* Terminals (tokens returned by the scanner) */
 
 /* reserved words: */
-terminal PRINT, EXTENDS, PUBLIC, STATIC, VOID, MAIN, CLASS, IF, ELSE, WHILE, THIS, TRUE, FALSE, INT, NEW, LENGTH, OR, RETURN;
+terminal PRINT, EXTENDS, PUBLIC, STATIC, VOID, MAIN, CLASS, IF, ELSE, WHILE, THIS, TRUE, FALSE, INT, NEW, LENGTH, RETURN;
 
 /* operators: */
-terminal PLUS, EQ, TIMES, MINUS, DIV, MOD, LT, GT, EQEQ, NEQ, GTE, LTE, AND, NOT,
+terminal PLUS, EQ, TIMES, MINUS, DIV, MOD, LT, GT, EQEQ, NEQ, GTE, LTE, AND, OR, NOT,
         MODEQ, TIMESEQ, PLUSEQ, MINUSEQ, DIVEQ, INC, DEC;
 
 /* delimiters: */
@@ -32,6 +32,8 @@ terminal O_PAREN, C_PAREN, O_SBRACKET, LBRACKET, RBRACKET, C_SBRACKET, O_CBRACKE
 /* tokens with values: */
 terminal String IDENTIFIER;
 terminal Integer NUM;
+terminal TYPE_INT;
+terminal STRING;
 
 /* Nonterminals */
 nonterminal Goal Goal;
@@ -41,6 +43,11 @@ nonterminal ClassDecl ClassDecl;
 nonterminal ClassDeclSimple ClassDeclSimple;
 nonterminal ClassDeclExtends ClassDeclExtends;
 nonterminal Identifier Identifier;
+nonterminal VarDecl VarDecl;
+nonterminal VarDeclList VarDeclList;
+nonterminal Type Type;
+nonterminal Expr Expr;
+
 
 /* Precedence declarations */
 precedence left PLUS;
@@ -58,41 +65,84 @@ Goal ::= MainClass:mc
                RESULT = g; 
          :};
 
-MainClass ::= PUBLIC CLASS Identifier:id O_CBRACKET PUBLIC STATIC VOID MAIN O_PAREN C_PAREN O_CBRACKET C_CBRACKET C_CBRACKET
-         {: 
-         		RESULT = new MainClass(id,new Identifier("",idleft), new VarDeclList(idleft),new StatementList(idleft),idleft); 
-         :};
+MainClass ::= PUBLIC CLASS Identifier:id O_CBRACKET 
+              PUBLIC STATIC VOID MAIN O_PAREN STRING LBRACKET RBRACKET Identifier:a C_PAREN 
+              O_CBRACKET C_CBRACKET C_CBRACKET
+              {: 
+                  // Usamos a.s (String) en lugar de 'a' (Identifier)
+                  RESULT = new MainClass(
+                      id,                       // Nombre de la clase (Identifier)
+                      new Identifier(a.s, aleft), // Nombre del argumento 'a' (String convertido a Identifier)
+                      new VarDeclList(idleft),   // Lista de variables (vacía en tu ejemplo)
+                      new StatementList(idleft), // Lista de statements (vacía en tu ejemplo)
+                      idleft                    // Línea de código
+                  ); 
+              :};
 
 ClassDeclList ::= ClassDecl:cd 
           {: 
-          		ClassDeclList cdl = new ClassDeclList(cdleft);
+                ClassDeclList cdl = new ClassDeclList(cdleft);
                 cdl.add(cd);
                 RESULT = cdl; 
           :}
-				| ClassDeclList:cdl ClassDecl: cd
-		  {:  
-					cdl.add(cd);
+                | ClassDeclList:cdl ClassDecl: cd
+          {:  
+                    cdl.add(cd);
                     RESULT = cdl; 
           :};
     
 ClassDecl ::= ClassDeclSimple:cds
                 {: 
-                	RESULT = (ClassDecl)cds; 
+                    RESULT = (ClassDecl)cds; 
                 :}
                | ClassDeclExtends:cde
                 {: 
-                	RESULT = (ClassDecl)cde; 
+                    RESULT = (ClassDecl)cde; 
                 :};
 
-ClassDeclSimple ::= PUBLIC CLASS Identifier:id O_CBRACKET C_CBRACKET
-				{: 
-					RESULT = new ClassDeclSimple(id, new VarDeclList(idleft),new MethodDeclList(idleft),idleft); 
-				:};
+ClassDeclSimple ::= PUBLIC CLASS Identifier:id O_CBRACKET VarDeclList:vl C_CBRACKET
+        {: 
+            RESULT = new ClassDeclSimple(id, vl, new MethodDeclList(idleft), idleft); 
+        :};
 
-ClassDeclExtends ::= PUBLIC CLASS Identifier:id EXTENDS Identifier:id2 O_CBRACKET C_CBRACKET
-				{:
-					RESULT = new ClassDeclExtends(id,id2,new VarDeclList(idleft),new MethodDeclList(idleft),idleft); 
-				:};
+
+ClassDeclExtends ::= PUBLIC CLASS Identifier:id EXTENDS Identifier:id2 O_CBRACKET VarDeclList:vl C_CBRACKET
+        {: 
+            RESULT = new ClassDeclExtends(id, id2, vl, new MethodDeclList(idleft), idleft); 
+        :};
+
 
 Identifier  ::= IDENTIFIER:id
                 {: RESULT = new Identifier(id, idleft); :};
+                
+Type ::= TYPE_INT:i
+       {: RESULT = new IntType(ileft); :}
+       | TYPE_INT:i LBRACKET RBRACKET
+       {: RESULT = new IntArrayType(ileft); :};
+
+ 
+Expr ::= NUM:n
+       {: RESULT = new IntegerLiteral(n, nleft); :}
+       | Identifier:id
+       {: RESULT = new IdentifierExpr(id.s, idleft); :}; 
+
+
+               
+VarDecl ::= Type:t Identifier:i SEMICOLON
+        {: 
+            RESULT = new VarDeclSimple(t, i, tleft); 
+        :}
+        | Type:t Identifier:i EQ Expr:e SEMICOLON
+        {: 
+            RESULT = new VarDeclAssign(t, i, e, tleft); 
+        :};
+                
+VarDeclList ::= 
+        {: 
+            RESULT = new VarDeclList(0); 
+        :}
+        | VarDeclList:vl VarDecl:vd
+        {: 
+            vl.add(vd); RESULT = vl; 
+        :};
+
