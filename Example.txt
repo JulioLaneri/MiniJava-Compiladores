@@ -1,8 +1,14 @@
 public class MiPrograma {
     public static void main(String[] args) {
-        int x = 10;
+        int x;
         int y;
+        int z;
+        int w;
+        int v;
         x = 10;
         y = 20;
+        z = x + y;
+        w = x * y;
+        v = (x + y) * (x - y);
     }
 }

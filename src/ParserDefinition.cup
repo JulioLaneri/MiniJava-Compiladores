@@ -120,7 +120,17 @@ Type ::= INT:i
 Expr ::= NUM:n
        {: RESULT = new IntegerLiteral(n, nleft); :}
        | Identifier:id
-       {: RESULT = new IdentifierExpr(id.s, idleft); :};
+       {: RESULT = new IdentifierExpr(id.s, idleft); :}
+       | Expr:e1 PLUS Expr:e2
+       {: RESULT = new Plus(e1, e2, e1left); :}
+       | Expr:e1 MINUS Expr:e2
+       {: RESULT = new Minus(e1, e2, e1left); :}
+       | Expr:e1 TIMES Expr:e2
+       {: RESULT = new Mult(e1, e2, e1left); :}
+       | Expr:e1 DIV Expr:e2
+       {: RESULT = new Div(e1, e2, e1left); :}
+       | O_PAREN Expr:e C_PAREN
+       {: RESULT = e; :};
 
 Statement ::= Identifier:id EQ Expr:e SEMICOLON
            {: RESULT = new Assign(id, e, idleft); :};
@@ -132,6 +142,10 @@ StatementList ::=
 
                
 VarDecl ::= Type:t Identifier:i SEMICOLON
+        {: 
+            RESULT = new VarDeclSimple(t, i, tleft); 
+        :}
+        | Type:t Identifier:i EQ Expr:e SEMICOLON
         {: 
             RESULT = new VarDeclSimple(t, i, tleft); 
         :};
