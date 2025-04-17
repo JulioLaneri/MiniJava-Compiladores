@@ -1,9 +1,7 @@
 import java.io.InputStreamReader;
-
 import ast.Goal;
 import ast.visitor.MiniJPrintVisitor;
 import ast.visitor.Visitor;
-import java_cup.parser;
 import java_cup.runtime.Symbol;
 
 public class Main {

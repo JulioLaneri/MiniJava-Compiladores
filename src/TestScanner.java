@@ -7,7 +7,6 @@ import ast.Goal;
 import ast.Statement;
 import ast.visitor.MiniJPrintVisitor;
 import ast.visitor.Visitor;
-import java_cup.sym;
 import java_cup.runtime.Symbol;
 
 public class TestScanner {

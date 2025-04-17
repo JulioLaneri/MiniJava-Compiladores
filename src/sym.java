@@ -6,61 +6,59 @@
 /** CUP generated class containing symbol constants. */
 public class sym {
   /* terminals */
-  public static final int DIVEQ = 38;
-  public static final int LTE = 30;
-  public static final int LBRACKET = 44;
-  public static final int MODEQ = 34;
-  public static final int C_PAREN = 42;
-  public static final int TIMESEQ = 35;
-  public static final int O_PAREN = 41;
+  public static final int DIVEQ = 40;
+  public static final int LTE = 32;
+  public static final int LBRACKET = 45;
+  public static final int MODEQ = 36;
+  public static final int C_PAREN = 44;
+  public static final int TIMESEQ = 37;
+  public static final int O_PAREN = 43;
   public static final int INT = 15;
   public static final int O_CBRACKET = 47;
-  public static final int MINUS = 22;
+  public static final int MINUS = 24;
   public static final int STATIC = 5;
   public static final int SEMICOLON = 49;
-  public static final int NOT = 33;
-  public static final int AND = 31;
-  public static final int LT = 25;
-  public static final int OR = 32;
+  public static final int NOT = 35;
+  public static final int AND = 33;
+  public static final int LT = 27;
+  public static final int OR = 34;
   public static final int COMMA = 50;
   public static final int CLASS = 8;
-  public static final int INC = 39;
-  public static final int DIV = 23;
-  public static final int PLUSEQ = 36;
-  public static final int TYPE_INT = 54;
+  public static final int INC = 41;
+  public static final int DIV = 25;
+  public static final int PLUSEQ = 38;
   public static final int NUM = 53;
-  public static final int MINUSEQ = 37;
-  public static final int PLUS = 19;
+  public static final int MINUSEQ = 39;
+  public static final int PLUS = 21;
   public static final int MAIN = 7;
   public static final int IF = 9;
   public static final int THIS = 12;
   public static final int DOT = 51;
-  public static final int O_SBRACKET = 43;
+  public static final int INTARRAY = 20;
   public static final int EOF = 0;
+  public static final int BOOLEAN = 19;
   public static final int RETURN = 18;
-  public static final int RBRACKET = 45;
+  public static final int RBRACKET = 46;
   public static final int TRUE = 13;
   public static final int NEW = 16;
   public static final int error = 1;
-  public static final int EQEQ = 27;
-  public static final int MOD = 24;
-  public static final int NEQ = 28;
+  public static final int EQEQ = 29;
+  public static final int MOD = 26;
+  public static final int NEQ = 30;
   public static final int VOID = 6;
-  public static final int EQ = 20;
-  public static final int GTE = 29;
-  public static final int TIMES = 21;
+  public static final int EQ = 22;
+  public static final int GTE = 31;
+  public static final int TIMES = 23;
   public static final int ELSE = 10;
   public static final int C_CBRACKET = 48;
   public static final int WHILE = 11;
   public static final int PUBLIC = 4;
   public static final int EXTENDS = 3;
-  public static final int STRING = 55;
-  public static final int DEC = 40;
+  public static final int DEC = 42;
   public static final int FALSE = 14;
-  public static final int GT = 26;
+  public static final int GT = 28;
   public static final int PRINT = 2;
   public static final int LENGTH = 17;
-  public static final int C_SBRACKET = 46;
   public static final int IDENTIFIER = 52;
   public static final String[] terminalNames = new String[] {
   "EOF",
@@ -82,6 +80,8 @@ public class sym {
   "NEW",
   "LENGTH",
   "RETURN",
+  "BOOLEAN",
+  "INTARRAY",
   "PLUS",
   "EQ",
   "TIMES",
@@ -106,19 +106,15 @@ public class sym {
   "DEC",
   "O_PAREN",
   "C_PAREN",
-  "O_SBRACKET",
   "LBRACKET",
   "RBRACKET",
-  "C_SBRACKET",
   "O_CBRACKET",
   "C_CBRACKET",
   "SEMICOLON",
   "COMMA",
   "DOT",
   "IDENTIFIER",
-  "NUM",
-  "TYPE_INT",
-  "STRING"
+  "NUM"
   };
 }
 

@@ -22,17 +22,28 @@ whitespace=[\r\n]|[ \t]
 %%
 "print" { return symbol(sym.PRINT, yytext()); }
 
+"class" { return symbol(sym.CLASS, yytext()); }
+"public" { return symbol(sym.PUBLIC, yytext()); }
+"static"    { return symbol(sym.STATIC, yytext()); }
+"void"      { return symbol(sym.VOID, yytext()); }
+"main"      { return symbol(sym.MAIN, yytext()); }
+"extends"   { return symbol(sym.EXTENDS, yytext()); }
+
+
+
 "true"      { return symbol(sym.TRUE, yytext()); }
 "false"     { return symbol(sym.FALSE, yytext()); }
 "this"      { return symbol(sym.THIS, yytext()); }
 "else"      { return symbol(sym.ELSE, yytext()); }
 "new"       { return symbol(sym.NEW, yytext()); }
 "int"       { return symbol(sym.INT, yytext()); }
+"boolean" { return symbol(sym.BOOLEAN, yytext()); }
 "if"        { return symbol(sym.IF, yytext()); }
 "while"     { return symbol(sym.WHILE, yytext()); }
 "length"    { return symbol(sym.LENGTH, yytext()); }
-"return"	{ return symbol(sym.RETURN, yytext()); }
-"System.out.println" { return symbol(sym.PRINT, yytext()); }
+"return"  { return symbol(sym.RETURN, yytext()); }
+"System.out.println" { return symbol(sym.PRINT, yytext()); } 
+//"int[]" { return symbol(sym.INTARRAY, yytext()); }
 
 // Operadores lógicos y relacionales
 "=="        { return symbol(sym.EQEQ, yytext()); }
@@ -44,7 +55,7 @@ whitespace=[\r\n]|[ \t]
 ">"         { return symbol(sym.GT, yytext()); }
 "&&"        { return symbol(sym.AND, yytext()); }
 "||"        { return symbol(sym.OR, yytext()); }
-"!" 		{ return symbol(sym.NOT, yytext()); }
+"!"     { return symbol(sym.NOT, yytext()); }
 
 // Operadores aritméticos
 "+"         { return symbol(sym.PLUS, yytext()); }
@@ -75,6 +86,8 @@ whitespace=[\r\n]|[ \t]
 ","         { return symbol(sym.COMMA, yytext()); }
 "."         { return symbol(sym.DOT, yytext()); }
 
+
+
 // Identificadores y números
 [0-9]+      { return symbol(sym.NUM, Integer.parseInt(yytext())); }
 [a-zA-Z_][a-zA-Z0-9_]*   { return symbol(sym.IDENTIFIER, yytext()); }
@@ -86,6 +99,6 @@ whitespace=[\r\n]|[ \t]
 {whitespace}+ {/*ignore*/}
 
 . { System.err.println(
-	"\nunexpected character in input: '" + yytext() + "' at line " +
-	(yyline+1) + " column " + (yycolumn+1));
+  "\nunexpected character in input: '" + yytext() + "' at line " +
+  (yyline+1) + " column " + (yycolumn+1));
   }
