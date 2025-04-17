@@ -48,11 +48,16 @@ nonterminal VarDecl VarDecl;
 nonterminal VarDeclList VarDeclList;
 nonterminal Type Type;
 nonterminal Expr Expr;
+nonterminal Statement Statement;
+nonterminal StatementList StatementList;
+nonterminal IdentifierExpr IdentifierExpr;
 
 
 
 /* Precedence declarations */
-precedence left PLUS;
+precedence left PLUS, MINUS;
+precedence left TIMES, DIV;
+precedence left EQ;
 
 Goal ::= MainClass:mc
          {: 
@@ -68,14 +73,9 @@ Goal ::= MainClass:mc
 MainClass ::= 
     PUBLIC CLASS Identifier:id O_CBRACKET 
     PUBLIC STATIC VOID MAIN O_PAREN Identifier LBRACKET RBRACKET Identifier C_PAREN 
-    O_CBRACKET C_CBRACKET C_CBRACKET
+    O_CBRACKET VarDeclList:vl StatementList:sl C_CBRACKET C_CBRACKET
     {:
-        RESULT = new MainClass(id, new Identifier("", idleft), new VarDeclList(idleft), new StatementList(idleft), idleft);
-    :}
-    | 
-    	PUBLIC CLASS Identifier:id O_CBRACKET VarDeclList:vl C_CBRACKET
-    {:
-        RESULT = new MainClass(id, new Identifier("", idleft), vl, new StatementList(idleft), idleft);
+        RESULT = new MainClass(id, new Identifier("", idleft), vl, sl, idleft);
     :};
 
 ClassDeclList ::= ClassDecl:cd 
@@ -117,12 +117,18 @@ Identifier  ::= IDENTIFIER:id
 Type ::= INT:i
        {: RESULT = new IntType(ileft); :};
        
- 
-/*Expr ::= NUM:n
+Expr ::= NUM:n
        {: RESULT = new IntegerLiteral(n, nleft); :}
        | Identifier:id
-       {: RESULT = new IdentifierExpr(id.s, idleft); :}; 
-*/
+       {: RESULT = new IdentifierExpr(id.s, idleft); :};
+
+Statement ::= Identifier:id EQ Expr:e SEMICOLON
+           {: RESULT = new Assign(id, e, idleft); :};
+
+StatementList ::= 
+               {: RESULT = new StatementList(0); :}
+               | StatementList:sl Statement:s
+               {: sl.add(s); RESULT = sl; :};
 
                
 VarDecl ::= Type:t Identifier:i SEMICOLON

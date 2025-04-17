@@ -1,5 +1,8 @@
-public class Main{ 
-	public static void main(String[] a){
-
-	}
+public class MiPrograma {
+    public static void main(String[] args) {
+        int x = 10;
+        int y;
+        x = 10;
+        y = 20;
+    }
 }
